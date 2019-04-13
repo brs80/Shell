@@ -60,8 +60,8 @@ int main(int argc, char *argv[]) {
    int status;
    char cmdLine[MAX_LINE_LEN];
    struct command_t command;
-
-   while (1) {
+   bool running = TRUE; 
+   while (running == TRUE) { 
       printPrompt();
       /* Read the command line and parse it */
       readCommand(cmdLine);

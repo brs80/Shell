@@ -68,7 +68,23 @@ int main(int argc, char *argv[]) {
       /*...*/
       parseCommand(cmdLine, &command);
       /*...*/
+
+      char* argument = command.argv[0]; 
+
+      /* give the last char NULL value for standard. */ 
       command.argv[command.argc] = NULL;
+
+      /* if the first command = "exit" exit the shell */ 
+      int i = 0; 
+	  if(strcmp(command.argv[0],"exit") == 0) {
+		return 1;
+	  }
+
+	  /* print out (testing) the array of commands in argv */ 
+      while(command.argv[i] != NULL) {
+      	printf("%s\n", command.argv[i]);
+      	++i;
+      }
 
       /* Create a child process to execute the command */
       if ((pid = fork()) == 0) {

@@ -60,7 +60,10 @@ int main(int argc, char *argv[]) {
    int status;
    char cmdLine[MAX_LINE_LEN];
    struct command_t command;
-   int running = 1;  
+   int running = 1;
+   char * manual = "manual.txt"; 
+   char* commandman = "more"; 
+
    while (running == 1) { 
       printPrompt();
       /* Read the command line and parse it */
@@ -75,16 +78,28 @@ int main(int argc, char *argv[]) {
       command.argv[command.argc] = NULL;
 
       /* if the first command = "exit" exit the shell */ 
-      int i = 0; 
+      
 	  if(strcmp(command.argv[0],"exit") == 0) {
-		return 1;
+         printf("%s\n", "[CTRL] + [C] to exit");
 	  }
 
-	  /* print out (testing) the array of commands in argv */ 
-      while(command.argv[i] != NULL) {
-      	printf("%s\n", command.argv[i]);
-      	++i;
+     if(strcmp(command.argv[0],"H") == 0) {
+      if ((pid = fork()) == 0) {
+         /* Child executing command */
+         printf("%s\n", "Usage: C file1 file2 cp file1 file2"); 
+         printf("%s\n", "D file rm file ");
+         printf("%s\n", "M file nano file; terminate with [Ctrl][X]");
+         printf("%s\n", "P file more file");
+         printf("%s\n", "W clear ");
+         printf("%s\n", "S firefox");
+         printf("%s\n", "W clear");
+         printf("%s\n", "X Get rid of X and simply use the name of the program");
       }
+      /* Wait for the child to terminate */
+      wait(&status);
+     }
+     int i = 0;
+	  /* print out (testing) the array of commands in argv */ 
 
       /* Create a child process to execute the command */
       if ((pid = fork()) == 0) {

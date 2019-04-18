@@ -64,7 +64,7 @@ int main(int argc, char *argv[]) {
    char * manual = "manual.txt"; 
    char* commandman = "more"; 
 
-   while (running == 1) { 
+   while (running) { 
       printPrompt();
       /* Read the command line and parse it */
       readCommand(cmdLine);
@@ -77,14 +77,8 @@ int main(int argc, char *argv[]) {
       /* give the last char NULL value for standard. */ 
       command.argv[command.argc] = NULL;
 
-      /* if the first command = "exit" exit the shell */ 
-      
-	  if(strcmp(command.argv[0],"exit") == 0) {
-         printf("%s\n", "[CTRL] + [C] to exit");
-	  }
 
      if(strcmp(command.argv[0],"H") == 0) {
-      if ((pid = fork()) == 0) {
          /* Child executing command */
          printf("%s\n", "Usage: C file1 file2 cp file1 file2"); 
          printf("%s\n", "D file rm file ");
@@ -93,14 +87,9 @@ int main(int argc, char *argv[]) {
          printf("%s\n", "W clear ");
          printf("%s\n", "S firefox");
          printf("%s\n", "W clear");
-         printf("%s\n", "X Get rid of X and simply use the name of the program");
-      }
-      /* Wait for the child to terminate */
-      wait(&status);
+         printf("%s\n", "X program execute the named program");
      }
-     int i = 0;
-	  /* print out (testing) the array of commands in argv */ 
-
+	  
       /* Create a child process to execute the command */
       if ((pid = fork()) == 0) {
          /* Child executing command */
@@ -108,6 +97,14 @@ int main(int argc, char *argv[]) {
       }
       /* Wait for the child to terminate */
       wait(&status);
+
+      /* tell user to hit ctrl + c to executing */ 
+     if(strcmp(command.argv[0],"exit") == 0) {
+         char args[1][1];
+         char *exitName = "exit\n";
+         args[0][0] = '\0';
+         printf("%s\n", "[CTRL] + [C] to exit");
+     }
    }
 
    /* Shell termination */
@@ -155,7 +152,7 @@ void printPrompt() {
    /* Build the prompt string to have the machine name,
     * current directory, or other desired information
     */
-   char* promptString = "^(~(oo)~)^";
+   char* promptString = "brs80";
    printf("%s ", promptString);
 }
 

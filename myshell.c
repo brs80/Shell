@@ -105,44 +105,47 @@ int main(int argc, char *argv[]) {
 	    }
 	    else if(strcmp(command.argv[0],"D") == 0) 
 		{
+            /* execute command here using execvp */ 
 		}
 		else if(strcmp(command.argv[0],"E") == 0) 
 		{
+            /* execute command here using execvp */ 
 		}
 		else if(strcmp(command.argv[0],"H") == 0) 
 		{
-
+            /* execute command here using execvp */ 
 		}
 		else if(strcmp(command.argv[0],"L") == 0) 
 		{
-
+            /* execute command here using execvp */ 
 		}
 		else if(strcmp(command.argv[0],"M") == 0) 
 		{
-		 	
+		 	/* execute command here using execvp */ 
 		}
 		else if(strcmp(command.argv[0],"P") == 0) 
 		{
-		 	
+		 	/* execute command here using execvp */ 
 		}
 		else if(strcmp(command.argv[0],"W") == 0) 
 		{
-		 	
+		 	/* execute command here using execvp */ 
 		}
 		else if(strcmp(command.argv[0],"Q") == 0) 
 		{
-		 	
+		 	/* execute command here using execvp */ 
 		}
 		else if(strcmp(command.argv[0],"S") == 0) 
 		{
-		 	
+		 	/* execute command here using execvp */ 
 		}
 		else if(strcmp(command.argv[0],"W") == 0) 
 		{
-		 	
+		 	/* execute command here using execvp */ 
 		}
 		else if(strcmp(command.argv[0],"X") == 0)
 		{
+            /* execute command here using execvp */ 
 		}
 		else 
 		{ 

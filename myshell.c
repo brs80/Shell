@@ -77,7 +77,7 @@ int main(int argc, char *argv[]) {
       /* give the last char NULL value for standard. */ 
       command.argv[command.argc] = NULL;
 
-    /* H (help) displays the manual of the linux commands */
+        /* H (help) displays the manual of the linux commands */
     	if(strcmp(command.argv[0],"H") == 0) {
             printf("%s\n", "Usage: C file1 file2 cp file1 file2"); 
             printf("%s\n", "D file rm file ");
@@ -92,29 +92,40 @@ int main(int argc, char *argv[]) {
             printf("%s\n", "W clear the screen");
             printf("%s\n", "X program execute the named program");  
         } 
-    	else if(strcmp(command.argv[0],"C") == 0) {
-            
+
+    	else if(strcmp(command.argv[0],"C") == 0) {    
 	     	 /* Create a child process to execute the command */
 	    	if ((pid = fork()) == 0) {
 	         /* Child executing command */
 	    	execvp("cp", command.argv);
-      	}
-        /* Wait for the child to terminate */
-      	wait(&status);
-
+          	}
+            /* Wait for the child to terminate */
+          	wait(&status);
 	    }
+
 	    else if(strcmp(command.argv[0],"D") == 0) 
 		{
-            /* execute command here using execvp */ 
+            /* Create a child process to execute the command */
+            if ((pid = fork()) == 0) {
+             /* Child executing command */
+            execvp("rm", command.argv);
+            }
+            /* Wait for the child to terminate */
+            wait(&status);
 		}
+
 		else if(strcmp(command.argv[0],"E") == 0) 
 		{
-            /* execute command here using execvp */ 
-		}
-		else if(strcmp(command.argv[0],"H") == 0) 
-		{
-            /* execute command here using execvp */ 
-		}
+            /* Create a child process to execute the command */
+            if ((pid = fork()) == 0) 
+            {
+             /* Child executing command */
+            execvp("echo", command.argv);
+            }
+            /* Wait for the child to terminate */
+            wait(&status);
+        }
+
 		else if(strcmp(command.argv[0],"L") == 0) 
 		{
             /* execute command here using execvp */ 
@@ -131,10 +142,20 @@ int main(int argc, char *argv[]) {
 		{
 		 	/* execute command here using execvp */ 
 		}
-		else if(strcmp(command.argv[0],"Q") == 0) 
-		{
-		 	/* execute command here using execvp */ 
-		}
+
+		else if(strcmp(command.argv[0],"Q") == 0) {
+                char args[1][1];
+                char *exitName = "exit\n";
+                args[0][0] = '\0';
+                
+                if ((pid = fork()) == 0) {
+                    /* Child executing command */
+                execvp("exit", args);
+                }
+                wait(&status);
+        }
+        
+        
 		else if(strcmp(command.argv[0],"S") == 0) 
 		{
 		 	/* execute command here using execvp */ 
@@ -149,13 +170,9 @@ int main(int argc, char *argv[]) {
 		}
 		else 
 		{ 
-		 	if(strcmp(command.argv[0],"exit") == 0) {
-	         char args[1][1];
-	         char *exitName = "exit\n";
-	         args[0][0] = '\0';
-	         printf("%s\n", "[CTRL] + [C] to exit");
-	     	}
+		 	
 		}
+        /*
 	    /* Create a child process to execute the command */
 	    if ((pid = fork()) == 0) {
 	        /* Child executing command */
@@ -164,13 +181,7 @@ int main(int argc, char *argv[]) {
 	    /* Wait for the child to terminate */
 	    wait(&status);
 
-	    /* tell user to hit ctrl + c to exit */ 
-	    if(strcmp(command.argv[0],"exit") == 0) {
-	        char args[1][1];
-	        char *exitName = "exit\n";
-	        args[0][0] = '\0';
-	        printf("%s\n", "[CTRL] + [C] to exit");
-	     }
+
    }
 
    /* Shell termination */

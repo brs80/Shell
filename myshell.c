@@ -164,7 +164,7 @@ int main(int argc, char *argv[]) {
 
             if (pid == 0) 
             {
-                execvp("exit\n", command.argv);
+                execvp("exit", command.argv);
             }
             else{
                 wait(&status);

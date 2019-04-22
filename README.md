@@ -3,6 +3,13 @@
 
 Linux Command line Shell for Operating Systems Class
 
+# Compile
+### gcc myshell.c -o myshell
+# run
+### ./myshell
+
+# Usage
+
 Create file2, Copy bytes of file1 to file2 without deleting file1
 ### C file1 file2 cp file1 file2 
 Delete a file
@@ -23,3 +30,7 @@ Surf the web (firefox)
 ### S
 execute the named program
 ### X program 
+
+# RESOURCES
+### Dr. O'Neil's starter file (parseCommand, readCommand functions) 
+### Operating System Concepts by A. Silberschatz, P.B. Galvin and G. Gagne.

@@ -62,20 +62,19 @@ int main(int argc, char *argv[]) {
     struct command_t command;
 
     while (1) { 
-      printPrompt();
-      /* Read the command line and parse it */
-      readCommand(cmdLine);
-      /*  */
-      parseCommand(cmdLine, &command);
-      /*...*/
+        printPrompt();
+        /* Read the command line and parse it */
+        readCommand(cmdLine);
+        /* build argv and command object */
+        parseCommand(cmdLine, &command);
 
-      char* argument = command.argv[0]; 
+        char* argument = command.argv[0]; 
 
-      /* give the last char NULL value for standard. */ 
-      command.argv[command.argc] = NULL;
+        /* give the last char NULL value for standard. */ 
+        command.argv[command.argc] = NULL;
 
         /* H (help) displays the manual of the linux commands */
-    	if(strcmp(command.argv[0],"H") == 0) {
+        if(strcmp(command.argv[0],"H") == 0) {
             printf("%s\n", "Usage: C file1 file2 cp file1 file2"); 
             printf("%s\n", "D file rm file ");
             printf("%s\n", "E comment ; echo comment on the screen  ");
@@ -87,41 +86,39 @@ int main(int argc, char *argv[]) {
             printf("%s\n", "S firefox");
             printf("%s\n", "W clear the screen");
             printf("%s\n", "X program execute the named program");  
-        } 
+        }
 
-    	else if(strcmp(command.argv[0],"C") == 0) {    
-	     	 /* Create a child process to execute the command */
-	    	if ((pid = fork()) == 0) {
-	         /* Child executing command */
-	    	execvp("cp", command.argv);
+        /* if command.argv[0] = C , Copy files in buffer */ 
+        else if(strcmp(command.argv[0],"C") == 0) {    
+            /* Create a child process to execute the command */
+            if ((pid = fork()) == 0) {
+            /* Child executing command */
+	    	  execvp("cp", command.argv);
           	}
             /* Wait for the child to terminate */
           	wait(&status);
 	    }
 
+        /* Delete a file */ 
 	    else if(strcmp(command.argv[0],"D") == 0) 
 		{
-            /* Create a child process to execute the command */
             if ((pid = fork()) == 0) {
-             /* Child executing command */
-            execvp("rm", command.argv);
+                execvp("rm", command.argv);
             }
-            /* Wait for the child to terminate */
             wait(&status);
 		}
 
+        /* echo string after command */ 
 		else if(strcmp(command.argv[0],"E") == 0) 
 		{
-            /* Create a child process to execute the command */
             if ((pid = fork()) == 0) 
             {
-             /* Child executing command */
-            execvp("echo", command.argv);
+                execvp("echo", command.argv);
             }
-            /* Wait for the child to terminate */
             wait(&status);
         }
 
+        /* List the files in the directory, and the directory */ 
 		else if(strcmp(command.argv[0],"L") == 0) 
 		{
             if ((pid = fork()) == 0) 
@@ -139,27 +136,30 @@ int main(int argc, char *argv[]) {
             }
             wait(&status);
 		}
-		else if(strcmp(command.argv[0],"M") == 0) 
+
+        /* Open nano editor with the CL argument */ 
+        else if(strcmp(command.argv[0],"M") == 0) 
 		{
             if ((pid = fork()) == 0) 
             {
-             /* Child executing command */
-            execvp("nano", command.argv);
+                /* Child executing command */
+                execvp("nano", command.argv);
             }
             /* Wait for the child to terminate */
             wait(&status); 
-		}
-		else if(strcmp(command.argv[0],"P") == 0) 
-		{
+        }
+
+        /* Print the file to screen  */ 
+        else if(strcmp(command.argv[0],"P") == 0) 
+        {
             if ((pid = fork()) == 0) 
             {
-             /* Child executing command */
-            execvp("more", command.argv);
+                execvp("more", command.argv);
             }
-            /* Wait for the child to terminate */
             wait(&status); 
 		}
 
+        /* Quit the Terminal */ 
 		else if(strcmp(command.argv[0],"Q") == 0) {
 
             if (pid == 0) 
@@ -173,7 +173,7 @@ int main(int argc, char *argv[]) {
             return 0; 
         }
         
-        
+        /* Open firefox */ 
 		else if(strcmp(command.argv[0],"S") == 0) 
 		{
             if ((pid = fork()) == 0) 
@@ -182,7 +182,7 @@ int main(int argc, char *argv[]) {
             }
             wait(&status); 
 		}
-
+        /* Clear the screen */ 
 		else if(strcmp(command.argv[0],"W") == 0) 
 		{
             if ((pid = fork()) == 0) 
@@ -192,7 +192,7 @@ int main(int argc, char *argv[]) {
 
             wait(&status); 
 		}
-
+        /* Execute the given program n */ 
 		else if(strcmp(command.argv[0],"X") == 0)
 		{
             if ((pid = fork()) == 0) 

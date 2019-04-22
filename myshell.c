@@ -56,19 +56,16 @@ void printPrompt();
 void readCommand(char *);
 
 int main(int argc, char *argv[]) {
-   int pid;
-   int status;
-   char cmdLine[MAX_LINE_LEN];
-   struct command_t command;
-   int running = 1;
-   char * manual = "manual.txt"; 
-   char* commandman = "more"; 
+    int pid;        /* the process id */ 
+    int status;     /* status of our process */
+    char cmdLine[MAX_LINE_LEN];
+    struct command_t command;
 
-   while (running) { 
+    while (1) { 
       printPrompt();
       /* Read the command line and parse it */
       readCommand(cmdLine);
-      /*...*/
+      /*  */
       parseCommand(cmdLine, &command);
       /*...*/
 
@@ -86,7 +83,6 @@ int main(int argc, char *argv[]) {
             printf("%s\n", "L list contents of current direcor ");
             printf("%s\n", "M file nano file; terminate with [Ctrl][X]");
             printf("%s\n", "P file display the contents of the named file on screen.");
-            printf("%s\n", "W clear ");
             printf("%s\n", "Q quit the shell ");
             printf("%s\n", "S firefox");
             printf("%s\n", "W clear the screen");
@@ -128,60 +124,92 @@ int main(int argc, char *argv[]) {
 
 		else if(strcmp(command.argv[0],"L") == 0) 
 		{
-            /* execute command here using execvp */ 
+            if ((pid = fork()) == 0) 
+            {
+                printf("%s\n", "");
+                execvp("pwd", command.argv);
+
+            }
+            wait(&status);            
+            if ((pid = fork()) == 0) 
+            {
+                printf("%s\n", "");
+                command.argv[1] = "-l";
+                execvp("ls", command.argv);
+            }
+            wait(&status);
 		}
 		else if(strcmp(command.argv[0],"M") == 0) 
 		{
-		 	/* execute command here using execvp */ 
+            if ((pid = fork()) == 0) 
+            {
+             /* Child executing command */
+            execvp("nano", command.argv);
+            }
+            /* Wait for the child to terminate */
+            wait(&status); 
 		}
 		else if(strcmp(command.argv[0],"P") == 0) 
 		{
-		 	/* execute command here using execvp */ 
-		}
-		else if(strcmp(command.argv[0],"W") == 0) 
-		{
-		 	/* execute command here using execvp */ 
+            if ((pid = fork()) == 0) 
+            {
+             /* Child executing command */
+            execvp("more", command.argv);
+            }
+            /* Wait for the child to terminate */
+            wait(&status); 
 		}
 
 		else if(strcmp(command.argv[0],"Q") == 0) {
-                char args[1][1];
-                char *exitName = "exit\n";
-                args[0][0] = '\0';
-                
-                if ((pid = fork()) == 0) {
-                    /* Child executing command */
-                execvp("exit", args);
-                }
+
+            if (pid == 0) 
+            {
+                execvp("exit\n", command.argv);
+            }
+            else{
                 wait(&status);
+                exit(0);
+            }
+            return 0; 
         }
         
         
 		else if(strcmp(command.argv[0],"S") == 0) 
 		{
-		 	/* execute command here using execvp */ 
+            if ((pid = fork()) == 0) 
+            {
+                execvp("firefox", command.argv);
+            }
+            wait(&status); 
 		}
+
 		else if(strcmp(command.argv[0],"W") == 0) 
 		{
-		 	/* execute command here using execvp */ 
+            if ((pid = fork()) == 0) 
+            {
+                execvp("clear", command.argv);
+            }
+
+            wait(&status); 
 		}
+
 		else if(strcmp(command.argv[0],"X") == 0)
 		{
-            /* execute command here using execvp */ 
+            if ((pid = fork()) == 0) 
+            {
+                execvp(command.argv[1], command.argv);
+            }
+            wait(&status); 
 		}
-		else 
-		{ 
-		 	
-		}
-        /*
-	    /* Create a child process to execute the command */
-	    if ((pid = fork()) == 0) {
-	        /* Child executing command */
-	        execvp(command.name, command.argv);
-	      }
-	    /* Wait for the child to terminate */
-	    wait(&status);
-
-
+        /* if not in our command list, try normal execution */ 
+        else { 
+            if ((pid = fork()) == 0) 
+            {
+                execvp(command.argv[0], command.argv);
+            }
+            wait(&status); 
+        }
+	
    }
 
    /* Shell termination */
@@ -229,7 +257,7 @@ void printPrompt() {
    /* Build the prompt string to have the machine name,
     * current directory, or other desired information
     */
-   char* promptString = "brs80";
+   char* promptString = "linux (brs80)|>";
    printf("%s ", promptString);
 }
 

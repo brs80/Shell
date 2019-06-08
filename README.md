@@ -3,9 +3,9 @@
 
 Linux Command line Shell for Operating Systems Class
 
-# Compile
+#   Compile:
 ### gcc myshell.c -o myshell
-# run
+#   Run:
 ### ./myshell
 
 # Usage
